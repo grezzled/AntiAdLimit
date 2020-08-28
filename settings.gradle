@@ -1,0 +1,3 @@
+rootProject.name='AntiAdLimit'
+include ':app'
+include ':AntiAdLimit_Module'
