@@ -12,11 +12,15 @@ import android.content.SharedPreferences;
 class PrefUtils {
 
     private static final String PREF_NAME = "AntiAdLimitPref";
+    private static final String LABEL_LIMIT_ACTIVATED = "JsonLimitActivated";
     private static final String LABEL_ADS_ACTIVATED = "JsonAdsActivated";
     private static final String LABEL_CLICKS = "JsonClicks";
     private static final String LABEL_IMPRESSIONS = "JsonImpressions";
     private static final String LABEL_DELAY_MS = "JsonDelayMS";
     private static final String LABEL_BAN_HOURS = "JsonBanHours";
+    private static final String LABEL_HIDE_ON_CLICK = "JsonHideOnClick";
+
+    // STATISTICS
     private static final String LABEL_COUNTER_CLICKS = "CounterClicks";
     private static final String LABEL_COUNTER_IMPRESSIONS = "CounterImpressions";
     private static final String LABEL_TIME_START_BAN = "TimeStartBan";
@@ -35,20 +39,22 @@ class PrefUtils {
     }
 
     @SuppressLint("CommitPrefEdits")
-    PrefUtils init(Context context) {
-        if (preferences == null)
-            preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        if (editor == null)
-            editor = preferences.edit();
+    PrefUtils init(Context context, String prefName) {
+//        if (preferences == null)
+        preferences = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
+//        if (editor == null)
+        editor = preferences.edit();
         return this;
     }
 
-    void updateJsonData(boolean adsActivated, int clicks, int impressions, long delayMs, int banHours) {
+    void updateJsonData(boolean limitActivated, boolean adsActivated, int clicks, int impressions, long delayMs, int banHours, boolean hideOnClick) {
+        editor.putBoolean(LABEL_LIMIT_ACTIVATED, limitActivated);
         editor.putBoolean(LABEL_ADS_ACTIVATED, adsActivated);
         editor.putInt(LABEL_CLICKS, clicks);
         editor.putInt(LABEL_IMPRESSIONS, impressions);
         editor.putLong(LABEL_DELAY_MS, delayMs);
         editor.putInt(LABEL_BAN_HOURS, banHours);
+        editor.putBoolean(LABEL_HIDE_ON_CLICK, hideOnClick);
         editor.apply();
     }
 
@@ -81,6 +87,16 @@ class PrefUtils {
         long endBan = startBan + hToMs;
         editor.putLong(LABEL_TIME_START_BAN, startBan);
         editor.putLong(LABEL_TIME_END_BAN, endBan);
+        editor.apply();
+    }
+
+
+    boolean getLimitActivated() {
+        return preferences.getBoolean(LABEL_LIMIT_ACTIVATED, false);
+    }
+
+    boolean getAdActivated() {
+        return preferences.getBoolean(LABEL_ADS_ACTIVATED, true);
     }
 
     long getTimeEndBan() {
@@ -105,5 +121,9 @@ class PrefUtils {
 
     int getImpressionsLimit() {
         return preferences.getInt(LABEL_IMPRESSIONS, 0);
+    }
+
+    boolean getHideOnClick() {
+        return preferences.getBoolean(LABEL_HIDE_ON_CLICK, false);
     }
 }

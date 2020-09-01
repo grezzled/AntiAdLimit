@@ -13,8 +13,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import java.net.FileNameMap;
-
 import anti.ad.limit.Interface.FanBannerListener;
 
 import static anti.ad.limit.AntiAdLimit.TAG;
@@ -29,17 +27,19 @@ public class FanBanner {
     private AdView adView;
     private Context context;
     private LinearLayout adContainer;
-
+    private String placementId;
+    boolean testEnabled = false;
+    AdSize adSize1 = null;
     private static final int BANNER_320_50 = 101;
     private static final int BANNER_HEIGHT_50 = 102;
     private static final int BANNER_HEIGHT_90 = 103;
     public static final int RECTANGLE_HEIGHT_250 = 104;
 
-    public FanBanner(final Context context, String placementId, int adSize, LinearLayout adContainer) {
+    public FanBanner(final Context context, int adSize, LinearLayout adContainer) {
         this.context = context;
         this.adContainer = adContainer;
         // Set banner AdSize;
-        AdSize adSize1 = null;
+
         switch (adSize) {
             case BANNER_320_50:
                 adSize1 = AdSize.BANNER_320_50;
@@ -54,47 +54,17 @@ public class FanBanner {
                 adSize1 = AdSize.RECTANGLE_HEIGHT_250;
                 break;
         }
+    }
 
-        // Exit if no valid banner found
-        if (adSize1 == null)
-            return;
+    public FanBanner setUnitId(String unitId) {
+        this.placementId = unitId;
+        return this;
+    }
 
-        adView = new AdView(context, placementId, adSize1);
-        adContainer.addView(adView);
-        adView.setAdListener(new AdListener() {
-            @Override
-            public void onError(Ad ad, AdError adError) {
-                Log.e(TAG, "Error: Loading Banner");
-                if (fanBannerListener != null)
-                    fanBannerListener.onError();
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-                Log.d(TAG, "Success: Banner Loaded");
-                if (fanBannerListener != null)
-                    fanBannerListener.onLoaded();
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-                Log.d(TAG, "Banner Ad Clicked");
-                PrefUtils.getInstance().init(context).updateClicksCounter();
-                if (fanBannerListener != null) {
-                    fanBannerListener.onClicked();
-                }
-                // Hide Unit to prevent other clicks
-                hide();
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-                Log.d(TAG, "Impression Logged");
-                PrefUtils.getInstance().init(context).updateImpressionCounter();
-                if (fanBannerListener != null)
-                    fanBannerListener.onImpressionLogged();
-            }
-        });
+    public FanBanner enableTestAd(boolean enabled) {
+        if (enabled)
+            testEnabled = true;
+        return this;
     }
 
     public void setFanBannerListener(FanBannerListener fanBannerListener) {
@@ -103,8 +73,55 @@ public class FanBanner {
 
 
     public void loadAd() {
+        // Exit if no valid banner found
+        if (adSize1 == null)
+            return;
+
+        String newPlacementId = placementId;
+        if (testEnabled)
+            newPlacementId = "IMG_16_9_APP_INSTALL#" + placementId;
+
+        adView = new AdView(context, newPlacementId, adSize1);
+        adContainer.addView(adView);
+        adView.setAdListener(new AdListener() {
+            @Override
+            public void onError(Ad ad, AdError adError) {
+                Log.e(TAG, "Error: Loading Fan Banner");
+                if (fanBannerListener != null)
+                    fanBannerListener.onError();
+            }
+
+            @Override
+            public void onAdLoaded(Ad ad) {
+                Log.d(TAG, "Success: Fan Banner Loaded");
+                if (fanBannerListener != null)
+                    fanBannerListener.onLoaded();
+            }
+
+            @Override
+            public void onAdClicked(Ad ad) {
+                Log.d(TAG, "Fan Banner Ad Clicked : " + placementId);
+                PrefUtils.getInstance().init(context, placementId).updateClicksCounter();
+                if (fanBannerListener != null) {
+                    fanBannerListener.onClicked();
+                }
+                // Hide Unit to prevent other clicks
+                if (PrefUtils.getInstance().init(context, placementId).getHideOnClick())
+                    hide();
+            }
+
+            @Override
+            public void onLoggingImpression(Ad ad) {
+                Log.d(TAG, "Fan Banner Impression Logged");
+                PrefUtils.getInstance().init(context, placementId).updateImpressionCounter();
+                if (fanBannerListener != null)
+                    fanBannerListener.onImpressionLogged();
+            }
+        });
+
         // Check if Ad is Banned
-        if (!AdLimitUtils.isBanned(context)) {
+        if (!AdLimitUtils.isBanned(context, placementId)) {
+
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,18 +68,21 @@ public class JSONPullService extends IntentService {
 
             String jsonData = buffer.toString();
             Log.d(TAG, "Success : Pulling JSON data => \n" + jsonData);
-
-            JSONObject jsonObject = new JSONObject(jsonData);
-            boolean adActivated = jsonObject.getBoolean("ads_activated");
-            int clicks = jsonObject.getInt("clicks");
-            int impressions = jsonObject.getInt("impressions");
-            int delayMs = jsonObject.getInt("delay_ms");
-            int banHours = jsonObject.getInt("ban_hours");
-
-            Log.d(TAG, "Success : " + adActivated + " | " + clicks + " | " + impressions + " | " + delayMs + " | " + banHours);
-
-            // Update Preferences
-            PrefUtils.getInstance().init(getApplicationContext()).updateJsonData(adActivated, clicks, impressions, delayMs, banHours);
+            JSONArray jsonArray = new JSONArray(jsonData);
+            for (int i= 0 ;i<jsonArray.length();i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String unitId = jsonObject.getString("unit_id");
+                boolean limitActivated = jsonObject.getBoolean("limit_activated");
+                boolean adActivated = jsonObject.getBoolean("ads_activated");
+                int clicks = jsonObject.getInt("clicks");
+                int impressions = jsonObject.getInt("impressions");
+                int delayMs = jsonObject.getInt("delay_ms");
+                int banHours = jsonObject.getInt("ban_hours");
+                boolean hideOnClick = jsonObject.getBoolean("hide_on_click");
+                Log.d(TAG, "Success : " + adActivated + " | " + clicks + " | " + impressions + " | " + delayMs + " | " + banHours + " | " + hideOnClick);
+                // Update Preferences
+                PrefUtils.getInstance().init(getApplicationContext(),unitId).updateJsonData(limitActivated,adActivated, clicks, impressions, delayMs, banHours, hideOnClick);
+            }
 
         } catch (MalformedURLException e) {
             Log.e(TAG, "Error : Pulling JSON data => Malformed Url");
@@ -104,10 +108,4 @@ public class JSONPullService extends IntentService {
         }
     }
 
-    private void prefUtils() {
-        SharedPreferences pref = getSharedPreferences("AntiAdLimitPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean("ad_activated", false);
-        editor.apply();
-    }
 }

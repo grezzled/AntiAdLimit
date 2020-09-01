@@ -25,10 +25,6 @@ import static com.google.android.gms.ads.identifier.AdvertisingIdClient.getAdver
 public class AntiAdLimit {
 
     static final String TAG = "AntiAdLimit_TAG";
-    private static final int BANNER_320_50 = 101;
-    private static final int BANNER_HEIGHT_50 = 102;
-    private static final int BANNER_HEIGHT_90 = 103;
-    public static final int RECTANGLE_HEIGHT_250 = 104;
 
     private static AntiAdLimit antiAdLimit;
     private Context context;
