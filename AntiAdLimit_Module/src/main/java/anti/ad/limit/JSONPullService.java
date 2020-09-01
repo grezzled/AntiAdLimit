@@ -2,7 +2,6 @@ package anti.ad.limit;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,6 +26,7 @@ import static anti.ad.limit.AntiAdLimit.TAG;
  * https://www.isoufiane.com
  */
 public class JSONPullService extends IntentService {
+
     public JSONPullService(String name) {
         super(name);
     }
@@ -68,9 +68,19 @@ public class JSONPullService extends IntentService {
 
             String jsonData = buffer.toString();
             Log.d(TAG, "Success : Pulling JSON data => \n" + jsonData);
-            JSONArray jsonArray = new JSONArray(jsonData);
-            for (int i= 0 ;i<jsonArray.length();i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+            JSONObject o = new JSONObject(jsonData);
+            JSONObject networksObject = o.getJSONObject("networks");
+
+            boolean admobActivated = networksObject.getBoolean("admob_activated");
+            boolean fanActivated = networksObject.getBoolean("fan_activated");
+
+            PrefUtils.getInstance().init(getApplicationContext(), PrefUtils.PREF_NAME).updateNetworksData(admobActivated, fanActivated);
+
+
+            Log.d(TAG, "admob : " + admobActivated + " fan : " + fanActivated);
+            JSONArray adUnitsArray = o.getJSONArray("ad_units");
+            for (int i = 0; i < adUnitsArray.length(); i++) {
+                JSONObject jsonObject = adUnitsArray.getJSONObject(i);
                 String unitId = jsonObject.getString("unit_id");
                 boolean limitActivated = jsonObject.getBoolean("limit_activated");
                 boolean adActivated = jsonObject.getBoolean("ads_activated");
@@ -81,7 +91,7 @@ public class JSONPullService extends IntentService {
                 boolean hideOnClick = jsonObject.getBoolean("hide_on_click");
                 Log.d(TAG, "Success : " + adActivated + " | " + clicks + " | " + impressions + " | " + delayMs + " | " + banHours + " | " + hideOnClick);
                 // Update Preferences
-                PrefUtils.getInstance().init(getApplicationContext(),unitId).updateJsonData(limitActivated,adActivated, clicks, impressions, delayMs, banHours, hideOnClick);
+                PrefUtils.getInstance().init(getApplicationContext(), unitId).updateUnitsData(limitActivated, adActivated, clicks, impressions, delayMs, banHours, hideOnClick);
             }
 
         } catch (MalformedURLException e) {

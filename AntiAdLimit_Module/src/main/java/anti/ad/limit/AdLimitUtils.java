@@ -7,9 +7,9 @@ import android.content.SharedPreferences;
  * Created by Soufiane on 28,August,2020
  * https://www.isoufiane.com
  */
-class AdLimitUtils {
+public class AdLimitUtils {
 
-    static boolean isBanned(Context context, String unitId) {
+    public static boolean isBanned(Context context, String unitId) {
 
         boolean limitActivated = PrefUtils.getInstance().init(context, unitId).getLimitActivated();
         boolean adActivated = PrefUtils.getInstance().init(context, unitId).getAdActivated();

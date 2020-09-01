@@ -1,4 +1,4 @@
-package anti.ad.limit;
+package anti.ad.limit.fan;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,7 +13,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import anti.ad.limit.Interface.FanBannerListener;
+import anti.ad.limit.AdLimitUtils;
+import anti.ad.limit.PrefUtils;
 
 import static anti.ad.limit.AntiAdLimit.TAG;
 
@@ -127,7 +128,7 @@ public class FanBanner {
                 public void run() {
                     adView.loadAd();
                 }
-            }, PrefUtils.getInstance().getDelayMs());
+            }, PrefUtils.getInstance().init(context,placementId).getDelayMs());
         }
     }
 

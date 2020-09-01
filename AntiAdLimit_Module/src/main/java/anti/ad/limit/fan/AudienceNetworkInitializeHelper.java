@@ -1,4 +1,4 @@
-package anti.ad.limit;
+package anti.ad.limit.fan;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,7 +22,7 @@ public class AudienceNetworkInitializeHelper implements AudienceNetworkAds.InitL
      *
      * @param context Application or Activity.
      */
-    static void initialize(Context context) {
+    public static void initialize(Context context) {
         if (!AudienceNetworkAds.isInitialized(context)) {
             if (DEBUG) {
                 AdSettings.turnOnSDKDebugger(context);

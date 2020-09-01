@@ -7,82 +7,136 @@ import android.util.Log;
 import android.widget.LinearLayout;
 
 import anti.ad.limit.AntiAdLimit;
-import anti.ad.limit.FanBanner;
-import anti.ad.limit.FanInters;
-import anti.ad.limit.Interface.FanBannerListener;
-import anti.ad.limit.Interface.FanIntersLisntener;
+import anti.ad.limit.admob.AdmobBanner;
+import anti.ad.limit.admob.AdmobBannerListener;
+import anti.ad.limit.fan.FanBanner;
+import anti.ad.limit.fan.FanInters;
+import anti.ad.limit.fan.FanBannerListener;
+import anti.ad.limit.fan.FanIntersLisntener;
 
 public class MainActivity extends AppCompatActivity {
 
     FanBanner fanBanner;
     FanInters fanInters;
+    AdmobBanner admobBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fanBanner = new FanBanner(this, FanBanner.RECTANGLE_HEIGHT_250, (LinearLayout) findViewById(R.id.fanBanner));
-        fanBanner.setFanBannerListener(new FanBannerListener() {
-            @Override
-            public void onError() {
 
-            }
+        AntiAdLimit antiAdLimit = new AntiAdLimit(this);
 
-            @Override
-            public void onLoaded() {
-                Log.d("Grezz", "Ad Loaded");
-            }
+        switch (antiAdLimit.getEnabledNetwork()) {
+            case AntiAdLimit.NETWORK_ADMOB:
+                // Admob stuff
+                admobBanner = new AdmobBanner(this, AdmobBanner.LARGE_BANNER_320_100, (LinearLayout) findViewById(R.id.viewBanner));
+                admobBanner.setFanBannerListener(new AdmobBannerListener() {
+                    @Override
+                    public void onAdLoaded() {
 
-            @Override
-            public void onClicked() {
+                    }
 
-            }
+                    @Override
+                    public void onAdFailedToLoad() {
 
-            @Override
-            public void onImpressionLogged() {
+                    }
 
-            }
-        });
-        fanBanner.enableTestAd(true)
-                .setUnitId("1564516670394005_1564551527057186")
-                .loadAd();
+                    @Override
+                    public void onAdOpened() {
 
-        fanInters = new FanInters(this);
-        fanInters.setFanIntersListener(new FanIntersLisntener() {
-            @Override
-            public void onError() {
+                    }
 
-            }
+                    @Override
+                    public void onAdClicked() {
 
-            @Override
-            public void onLoaded() {
-                fanInters.show();
-            }
+                    }
 
-            @Override
-            public void onDisplayed() {
+                    @Override
+                    public void onAdLeftApplication() {
 
-            }
+                    }
 
-            @Override
-            public void onDismissed() {
+                    @Override
+                    public void onAdClosed() {
 
-            }
+                    }
 
-            @Override
-            public void onClicked() {
+                    @Override
+                    public void onAdImpression() {
 
-            }
+                    }
+                });
+                admobBanner.setUnitId("tetsttdjflsk978").enableTestAd(true).loadAd();
 
-            @Override
-            public void onImpressionLogged() {
+                break;
+            case AntiAdLimit.NETWORK_FAN:
+                fanBanner = new FanBanner(this, FanBanner.RECTANGLE_HEIGHT_250, (LinearLayout) findViewById(R.id.viewBanner));
+                fanBanner.setFanBannerListener(new FanBannerListener() {
+                    @Override
+                    public void onError() {
 
-            }
-        });
-        fanInters.enableTestAd(true)
-                .setUnitId("1564516670394005_1564522647060074")
-                .loadAd();
+                    }
+
+                    @Override
+                    public void onLoaded() {
+                        Log.d("Grezz", "Ad Loaded");
+                    }
+
+                    @Override
+                    public void onClicked() {
+
+                    }
+
+                    @Override
+                    public void onImpressionLogged() {
+
+                    }
+                });
+                fanBanner.enableTestAd(true)
+                        .setUnitId("1564516670394005_1564551527057186")
+                        .loadAd();
+                fanInters = new FanInters(this);
+                fanInters.setFanIntersListener(new FanIntersLisntener() {
+                    @Override
+                    public void onError() {
+
+                    }
+
+                    @Override
+                    public void onLoaded() {
+                        fanInters.show();
+                    }
+
+                    @Override
+                    public void onDisplayed() {
+
+                    }
+
+                    @Override
+                    public void onDismissed() {
+
+                    }
+
+                    @Override
+                    public void onClicked() {
+
+                    }
+
+                    @Override
+                    public void onImpressionLogged() {
+
+                    }
+                });
+                fanInters.enableTestAd(true)
+                        .setUnitId("1564516670394005_1564522647060074")
+                        .loadAd();
+                break;
+            case AntiAdLimit.NETWORK_NONE:
+                // House Ad Here
+                break;
+        }
 
 
         // TODO add hide on click option
@@ -97,5 +151,7 @@ public class MainActivity extends AppCompatActivity {
             fanBanner.destroy();
         if (fanInters != null)
             fanInters.destroy();
+        if (admobBanner != null)
+            admobBanner.destroy();
     }
 }

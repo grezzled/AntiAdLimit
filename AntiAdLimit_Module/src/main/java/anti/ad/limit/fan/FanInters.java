@@ -1,4 +1,4 @@
-package anti.ad.limit;
+package anti.ad.limit.fan;
 
 import android.content.Context;
 import android.os.Handler;
@@ -9,7 +9,9 @@ import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.InterstitialAd;
 
-import anti.ad.limit.Interface.FanIntersLisntener;
+import anti.ad.limit.AdLimitUtils;
+import anti.ad.limit.PrefUtils;
+
 
 import static anti.ad.limit.AntiAdLimit.TAG;
 

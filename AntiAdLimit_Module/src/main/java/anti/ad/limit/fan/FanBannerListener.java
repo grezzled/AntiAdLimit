@@ -1,4 +1,4 @@
-package anti.ad.limit.Interface;
+package anti.ad.limit.fan;
 
 /**
  * Created by Soufiane on 28,August,2020

@@ -16,8 +16,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <view
-        android:id="@+id/fanBanner"
-        class="anti.ad.limit.UI.FanBannerUI"
+        android:id="@+id/viewBanner"
+        class="anti.ad.limit.fan.FanBannerUI"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints"

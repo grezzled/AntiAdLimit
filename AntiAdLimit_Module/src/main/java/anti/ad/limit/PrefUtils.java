@@ -9,9 +9,11 @@ import android.content.SharedPreferences;
  * Created by Soufiane on 28,August,2020
  * https://www.isoufiane.com
  */
-class PrefUtils {
+public class PrefUtils {
 
-    private static final String PREF_NAME = "AntiAdLimitPref";
+    public static final String PREF_NAME = "AntiAdLimitPref";
+
+    // Units
     private static final String LABEL_LIMIT_ACTIVATED = "JsonLimitActivated";
     private static final String LABEL_ADS_ACTIVATED = "JsonAdsActivated";
     private static final String LABEL_CLICKS = "JsonClicks";
@@ -19,6 +21,10 @@ class PrefUtils {
     private static final String LABEL_DELAY_MS = "JsonDelayMS";
     private static final String LABEL_BAN_HOURS = "JsonBanHours";
     private static final String LABEL_HIDE_ON_CLICK = "JsonHideOnClick";
+
+    // Networks
+    private static final String LABEL_NETWORK_ADMOB = "JsonNetworkAdmob";
+    private static final String LABEL_NETWORK_FAN = "JsonNetworkFan";
 
     // STATISTICS
     private static final String LABEL_COUNTER_CLICKS = "CounterClicks";
@@ -31,7 +37,7 @@ class PrefUtils {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
-    static PrefUtils getInstance() {
+    public static PrefUtils getInstance() {
         if (prefUtils == null) {
             prefUtils = new PrefUtils();
         }
@@ -39,7 +45,7 @@ class PrefUtils {
     }
 
     @SuppressLint("CommitPrefEdits")
-    PrefUtils init(Context context, String prefName) {
+    public PrefUtils init(Context context, String prefName) {
 //        if (preferences == null)
         preferences = context.getSharedPreferences(prefName, Context.MODE_PRIVATE);
 //        if (editor == null)
@@ -47,7 +53,7 @@ class PrefUtils {
         return this;
     }
 
-    void updateJsonData(boolean limitActivated, boolean adsActivated, int clicks, int impressions, long delayMs, int banHours, boolean hideOnClick) {
+    void updateUnitsData(boolean limitActivated, boolean adsActivated, int clicks, int impressions, long delayMs, int banHours, boolean hideOnClick) {
         editor.putBoolean(LABEL_LIMIT_ACTIVATED, limitActivated);
         editor.putBoolean(LABEL_ADS_ACTIVATED, adsActivated);
         editor.putInt(LABEL_CLICKS, clicks);
@@ -58,7 +64,13 @@ class PrefUtils {
         editor.apply();
     }
 
-    void updateClicksCounter() {
+    void updateNetworksData(boolean admob,boolean fan){
+        editor.putBoolean(LABEL_NETWORK_ADMOB,admob);
+        editor.putBoolean(LABEL_NETWORK_FAN,fan);
+        editor.apply();
+    }
+
+    public void updateClicksCounter() {
         int currentCount = preferences.getInt(LABEL_COUNTER_CLICKS, 0) + 1;
         editor.putInt(LABEL_COUNTER_CLICKS, currentCount);
         editor.apply();
@@ -69,7 +81,7 @@ class PrefUtils {
         editor.apply();
     }
 
-    void updateImpressionCounter() {
+    public void updateImpressionCounter() {
         int currentCount = preferences.getInt(LABEL_COUNTER_IMPRESSIONS, 0) + 1;
         editor.putInt(LABEL_COUNTER_IMPRESSIONS, currentCount);
         editor.apply();
@@ -90,6 +102,13 @@ class PrefUtils {
         editor.apply();
     }
 
+    boolean getFanActivated(){
+        return preferences.getBoolean(LABEL_NETWORK_FAN,true);
+    }
+
+    boolean getAdmobActivated(){
+        return preferences.getBoolean(LABEL_NETWORK_ADMOB,true);
+    }
 
     boolean getLimitActivated() {
         return preferences.getBoolean(LABEL_LIMIT_ACTIVATED, false);
@@ -99,31 +118,31 @@ class PrefUtils {
         return preferences.getBoolean(LABEL_ADS_ACTIVATED, true);
     }
 
-    long getTimeEndBan() {
+    public long getTimeEndBan() {
         return preferences.getLong(LABEL_TIME_END_BAN, 0);
     }
 
-    long getDelayMs() {
+    public long getDelayMs() {
         return preferences.getLong(LABEL_DELAY_MS, 0);
     }
 
-    int getClicksCount() {
+    public int getClicksCount() {
         return preferences.getInt(LABEL_COUNTER_CLICKS, 0);
     }
 
-    int getClicksLimit() {
+    public int getClicksLimit() {
         return preferences.getInt(LABEL_CLICKS, 0);
     }
 
-    int getImpressionsCount() {
+    public int getImpressionsCount() {
         return preferences.getInt(LABEL_COUNTER_IMPRESSIONS, 0);
     }
 
-    int getImpressionsLimit() {
+    public int getImpressionsLimit() {
         return preferences.getInt(LABEL_IMPRESSIONS, 0);
     }
 
-    boolean getHideOnClick() {
+    public boolean getHideOnClick() {
         return preferences.getBoolean(LABEL_HIDE_ON_CLICK, false);
     }
 }
