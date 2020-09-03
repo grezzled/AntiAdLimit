@@ -61,6 +61,7 @@ Please make sure to have a direct link to the hosted JSON file (e.g: https://mys
 | fan_activated | Override Admob units and use Audience Network units.| [`boolean`] Accepts **true** or **false**|
 
 ***Please notice  1:*** *if they are both **false** no Ad units will display so no Ads will run.*
+
 ***Please notice  2:*** *if they are both **true** Audience network will be used*
 
 **AdUnits Params Explained**
