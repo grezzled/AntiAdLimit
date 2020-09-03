@@ -116,7 +116,7 @@ public class FanInters {
     }
 
     public void show() {
-        if (interstitialAd.isAdLoaded())
+        if (interstitialAd!=null &&  interstitialAd.isAdLoaded())
             interstitialAd.show();
         else
             Log.d(TAG, "Cannot Show : Fan Interstitial Not Loaded ");

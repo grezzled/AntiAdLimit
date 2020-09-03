@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import anti.ad.limit.AntiAdLimit;
 import anti.ad.limit.admob.AdmobBanner;
 import anti.ad.limit.admob.AdmobBannerListener;
+import anti.ad.limit.admob.AdmobInters;
+import anti.ad.limit.admob.AdmobIntersListener;
 import anti.ad.limit.fan.FanBanner;
 import anti.ad.limit.fan.FanInters;
 import anti.ad.limit.fan.FanBannerListener;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     FanBanner fanBanner;
     FanInters fanInters;
     AdmobBanner admobBanner;
+    AdmobInters admobInters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 admobBanner.setUnitId("tetsttdjflsk978").enableTestAd(true).loadAd();
+
+                admobInters = new AdmobInters(this);
+                admobInters.setAdmobIntersListener(new AdmobIntersListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        admobInters.show();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad() {
+
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                            Log.d("grezz","HElloooooo!");
+                    }
+
+                    @Override
+                    public void onAdClicked() {
+
+                    }
+
+                    @Override
+                    public void onAdLeftApplication() {
+
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+
+                    }
+                });
+                admobInters.enableTestAd(true).setUnitId("tsadfsdafdslkfjsdlkfjasldkfjlksad").loadAd();
+
 
                 break;
             case AntiAdLimit.NETWORK_FAN:

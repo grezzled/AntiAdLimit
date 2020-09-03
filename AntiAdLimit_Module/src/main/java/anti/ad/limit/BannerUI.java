@@ -1,4 +1,4 @@
-package anti.ad.limit.fan;
+package anti.ad.limit;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -12,23 +12,23 @@ import anti.ad.limit.R;
  * Created by Soufiane on 27,August,2020
  * https://www.isoufiane.com
  */
-public class FanBannerUI extends LinearLayout {
+public class BannerUI extends LinearLayout {
 
     View bannerView ;
 
-    public FanBannerUI(Context context) {
+    public BannerUI(Context context) {
         super(context);
         LayoutInflater mInflater = LayoutInflater.from(context);
         bannerView = mInflater.inflate(R.layout.fan_banner,this,true);
     }
 
-    public FanBannerUI(Context context, AttributeSet attrs) {
+    public BannerUI(Context context, AttributeSet attrs) {
         super(context, attrs);
         LayoutInflater mInflater = LayoutInflater.from(context);
         bannerView = mInflater.inflate(R.layout.fan_banner,this,true);
     }
 
-    public FanBannerUI(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BannerUI(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         LayoutInflater mInflater = LayoutInflater.from(context);
         bannerView = mInflater.inflate(R.layout.fan_banner,this,true);
