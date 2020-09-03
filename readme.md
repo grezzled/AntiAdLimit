@@ -33,7 +33,7 @@ Please make sure to have a direct link to the hosted JSON file (e.g: https://mys
           "ad_units": [  
             {  
               "limit_activated": true,  
-              "unit_id": "1564516670394005_1564551527057186",  
+              "unit_id": "1234516670394005_1234551527057186",  
               "ads_activated": true,  
               "clicks": 2,  
               "impressions": 20,  
@@ -43,14 +43,15 @@ Please make sure to have a direct link to the hosted JSON file (e.g: https://mys
             },  
             {  
               "limit_activated": true,  
-              "unit_id": "1564516670394005_1564522647060074",  
+              "unit_id": "ca-app-pub-3940256099942544/6300978111",  
               "ads_activated": true,  
               "clicks": 2,  
               "impressions": 20,  
               "delay_ms": 3000,  
               "ban_hours": 1,  
               "hide_on_click": true  
-             }
+             },
+             ...
           ]  
         }
         
@@ -63,6 +64,7 @@ Please make sure to have a direct link to the hosted JSON file (e.g: https://mys
 ***Please notice  1:*** *if they are both **false** no Ad units will display so no Ads will run.*
 
 ***Please notice  2:*** *if they are both **true** Audience network will be used*
+
 
 **AdUnits Params Explained**
 | Param |  Description| Type | 
