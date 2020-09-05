@@ -64,8 +64,10 @@ public class AdmobInters {
             @Override
             public void onAdLoaded() {
                 Log.d(TAG, "Success : Admob Interstitial Loaded");
-                if (admobIntersListener != null)
+                if (admobIntersListener != null) {
+                    isAdLoaded = true;
                     admobIntersListener.onAdLoaded();
+                }
             }
 
             @Override
@@ -80,7 +82,6 @@ public class AdmobInters {
                 Log.d(TAG, "Admob Interstitial Impression Logged");
                 PrefUtils.getInstance().init(context, prefName).updateImpressionCounter();
                 if (admobIntersListener != null) {
-                    isAdLoaded = true;
                     admobIntersListener.onAdOpened();
 
                 }
