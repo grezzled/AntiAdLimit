@@ -27,7 +27,9 @@ public class AdmobBanner {
     private Context context;
     private LinearLayout adContainer;
     private String unitId;
+    private String prefName;
     boolean testEnabled;
+    boolean isAdLoaded = false;
     AdSize adSize1 = null;
     AdmobBannerListener admobBannerListener;
     AdView adView;
@@ -64,6 +66,11 @@ public class AdmobBanner {
 
     public AdmobBanner setUnitId(String unitId) {
         this.unitId = unitId;
+        // WorkAround for creating pref xml file as it doesn't support slash symbol .. so we get the after slash only
+        if (unitId.contains("/")){
+            this.prefName = unitId.substring( unitId.lastIndexOf("/")+1);
+            Log.d(TAG,unitId);
+        }
         return this;
     }
 
@@ -119,11 +126,13 @@ public class AdmobBanner {
             public void onAdOpened() {
                 super.onAdOpened();
                 Log.d(TAG, "Success: Admob Banner Opened");
-                PrefUtils.getInstance().init(context, unitId).updateClicksCounter();
-                if (admobBannerListener != null)
+                PrefUtils.getInstance().init(context, prefName).updateClicksCounter();
+                if (admobBannerListener != null) {
+                    isAdLoaded = true;
                     admobBannerListener.onAdOpened();
+                }
                 // Hide Unit to prevent other clicks
-                if (PrefUtils.getInstance().init(context, unitId).getHideOnClick())
+                if (PrefUtils.getInstance().init(context, prefName).getHideOnClick())
                     hide();
             }
 
@@ -131,14 +140,14 @@ public class AdmobBanner {
             public void onAdLoaded() {
                 super.onAdLoaded();
                 Log.d(TAG, "Success: Admob Banner Loaded");
-                PrefUtils.getInstance().init(context, unitId).updateImpressionCounter();
+                PrefUtils.getInstance().init(context, prefName).updateImpressionCounter();
                 if (admobBannerListener != null)
                     admobBannerListener.onAdLoaded();
             }
 
             @Override
             public void onAdClicked() {
-                Log.d(TAG, "Admob Banner Ad Clicked : " + unitId);
+                Log.d(TAG, "Admob Banner Ad Clicked : " + prefName);
                 super.onAdClicked();
                 if (admobBannerListener != null) {
                     admobBannerListener.onAdClicked();
@@ -156,20 +165,26 @@ public class AdmobBanner {
         final AdRequest adRequest = new AdRequest.Builder().build();
         adView.setAdSize(adSize1);
 
+
+
         // Check if Ad is Banned
-        if (!AdLimitUtils.isBanned(context, unitId)) {
+        if (!AdLimitUtils.isBanned(context, prefName)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     adView.loadAd(adRequest);
                 }
-            }, PrefUtils.getInstance().init(context, unitId).getDelayMs());
+            }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
         }
     }
 
     public void destroy() {
         if (adView != null)
             adView.destroy();
+    }
+
+    public boolean isAdLoaded(){
+        return isAdLoaded;
     }
 
     private void hide() {

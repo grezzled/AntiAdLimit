@@ -91,6 +91,12 @@ public class JSONPullService extends IntentService {
                 boolean hideOnClick = jsonObject.getBoolean("hide_on_click");
                 Log.d(TAG, "Success : " + adActivated + " | " + clicks + " | " + impressions + " | " + delayMs + " | " + banHours + " | " + hideOnClick);
                 // Update Preferences
+
+                // WorkAround for creating pref xml file as it doesn't support slash symbol .. so we get the after slash only
+                if (unitId.contains("/")){
+                    unitId = unitId.substring( unitId.lastIndexOf("/")+1);
+                    Log.d(TAG,unitId);
+                }
                 PrefUtils.getInstance().init(getApplicationContext(), unitId).updateUnitsData(limitActivated, adActivated, clicks, impressions, delayMs, banHours, hideOnClick);
             }
 

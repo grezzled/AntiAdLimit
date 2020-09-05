@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-                admobBanner.setUnitId("tetsttdjflsk978").enableTestAd(true).loadAd();
+                admobBanner.setUnitId("ca-app-pub-8281466180702761/6039096525").enableTestAd(true).loadAd();
 
                 admobInters = new AdmobInters(this);
                 admobInters.setAdmobIntersListener(new AdmobIntersListener() {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-                admobInters.enableTestAd(true).setUnitId("tsadfsdafdslkfjsdlkfjasldkfjlksad").loadAd();
+                admobInters.enableTestAd(true).setUnitId("ca-app-pub-8281466180702761/9786769849").loadAd();
 
 
                 break;

@@ -22,8 +22,10 @@ public class AdmobInters {
 
     private Context context;
     private String unitId;
+    private String prefName;
     private boolean testEnabled = false;
     private AdmobIntersListener admobIntersListener;
+    boolean isAdLoaded;
 
     private InterstitialAd interstitialAd;
 
@@ -33,6 +35,11 @@ public class AdmobInters {
 
     public AdmobInters setUnitId(String unitId) {
         this.unitId = unitId;
+        // WorkAround for creating pref xml file as it doesn't support slash symbol .. so we get the after slash only
+        if (unitId.contains("/")){
+            this.prefName = unitId.substring( unitId.lastIndexOf("/")+1);
+            Log.d(TAG,unitId);
+        }
         return this;
     }
 
@@ -71,14 +78,17 @@ public class AdmobInters {
             @Override
             public void onAdOpened() {
                 Log.d(TAG, "Admob Interstitial Impression Logged");
-                PrefUtils.getInstance().init(context, unitId).updateImpressionCounter();
-                if (admobIntersListener != null)
+                PrefUtils.getInstance().init(context, prefName).updateImpressionCounter();
+                if (admobIntersListener != null) {
+                    isAdLoaded = true;
                     admobIntersListener.onAdOpened();
+
+                }
             }
 
             @Override
             public void onAdClicked() {
-                Log.d(TAG, "Admob Interstitial Ad Clicked : " + unitId);
+                Log.d(TAG, "Admob Interstitial Ad Clicked : " + prefName);
                 if (admobIntersListener != null)
                     admobIntersListener.onAdClicked();
             }
@@ -86,7 +96,7 @@ public class AdmobInters {
             @Override
             public void onAdLeftApplication() {
                 Log.d(TAG, "Admob Interstitial Ad Clicked and Left the app");
-                PrefUtils.getInstance().init(context, unitId).updateClicksCounter();
+                PrefUtils.getInstance().init(context, prefName).updateClicksCounter();
                 if (admobIntersListener != null) {
                     admobIntersListener.onAdLeftApplication();
                 }
@@ -99,15 +109,20 @@ public class AdmobInters {
                     admobIntersListener.onAdClosed();
             }
         });
+
         // Check if Ad is Banned
-        if (!AdLimitUtils.isBanned(context, unitId)) {
+        if (!AdLimitUtils.isBanned(context, prefName)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     interstitialAd.loadAd(new AdRequest.Builder().build());
                 }
-            }, PrefUtils.getInstance().getDelayMs());
+            }, PrefUtils.getInstance().init(context,prefName).getDelayMs());
         }
+    }
+
+    public boolean isAdLoaded(){
+        return  isAdLoaded;
     }
 
     public void show(){

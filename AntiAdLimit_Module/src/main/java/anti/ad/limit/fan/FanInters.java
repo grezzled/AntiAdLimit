@@ -25,6 +25,7 @@ public class FanInters {
     private String unitId;
     private boolean testEnabled = false;
     private FanIntersLisntener fanIntersLisntener;
+    boolean isAdLoaded = false;
 
     private InterstitialAd interstitialAd;
 
@@ -64,8 +65,10 @@ public class FanInters {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(TAG, "Success : Fan Interstitial Loaded");
-                if (fanIntersLisntener != null)
+                if (fanIntersLisntener != null) {
+                    isAdLoaded = true;
                     fanIntersLisntener.onLoaded();
+                }
             }
 
             @Override
@@ -111,12 +114,12 @@ public class FanInters {
                 public void run() {
                     interstitialAd.loadAd();
                 }
-            }, PrefUtils.getInstance().getDelayMs());
+            }, PrefUtils.getInstance().init(context, unitId).getDelayMs());
         }
     }
 
     public void show() {
-        if (interstitialAd!=null &&  interstitialAd.isAdLoaded())
+        if (interstitialAd != null && interstitialAd.isAdLoaded())
             interstitialAd.show();
         else
             Log.d(TAG, "Cannot Show : Fan Interstitial Not Loaded ");
@@ -124,6 +127,10 @@ public class FanInters {
 
     public boolean isAdInvalidated() {
         return interstitialAd != null && interstitialAd.isAdInvalidated();
+    }
+
+    public boolean isAdLoaded() {
+        return isAdLoaded;
     }
 
     public void destroy() {

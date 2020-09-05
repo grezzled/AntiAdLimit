@@ -30,10 +30,11 @@ public class FanBanner {
     private LinearLayout adContainer;
     private String placementId;
     boolean testEnabled = false;
+    boolean isAdLoaded = false;
     AdSize adSize1 = null;
-    private static final int BANNER_320_50 = 101;
-    private static final int BANNER_HEIGHT_50 = 102;
-    private static final int BANNER_HEIGHT_90 = 103;
+    public static final int BANNER_320_50 = 101;
+    public static final int BANNER_HEIGHT_50 = 102;
+    public static final int BANNER_HEIGHT_90 = 103;
     public static final int RECTANGLE_HEIGHT_250 = 104;
 
     public FanBanner(final Context context, int adSize, LinearLayout adContainer) {
@@ -95,8 +96,10 @@ public class FanBanner {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(TAG, "Success: Fan Banner Loaded");
-                if (fanBannerListener != null)
+                if (fanBannerListener != null) {
+                    isAdLoaded = true;
                     fanBannerListener.onLoaded();
+                }
             }
 
             @Override
@@ -128,8 +131,12 @@ public class FanBanner {
                 public void run() {
                     adView.loadAd();
                 }
-            }, PrefUtils.getInstance().init(context,placementId).getDelayMs());
+            }, PrefUtils.getInstance().init(context, placementId).getDelayMs());
         }
+    }
+
+    public boolean isAdLoaded(){
+        return isAdLoaded;
     }
 
     public void destroy() {
