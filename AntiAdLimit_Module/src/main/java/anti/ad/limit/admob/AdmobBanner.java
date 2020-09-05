@@ -128,7 +128,6 @@ public class AdmobBanner {
                 Log.d(TAG, "Success: Admob Banner Opened");
                 PrefUtils.getInstance().init(context, prefName).updateClicksCounter();
                 if (admobBannerListener != null) {
-                    isAdLoaded = true;
                     admobBannerListener.onAdOpened();
                 }
                 // Hide Unit to prevent other clicks
@@ -140,9 +139,11 @@ public class AdmobBanner {
             public void onAdLoaded() {
                 super.onAdLoaded();
                 Log.d(TAG, "Success: Admob Banner Loaded");
+                isAdLoaded = true;
                 PrefUtils.getInstance().init(context, prefName).updateImpressionCounter();
                 if (admobBannerListener != null)
                     admobBannerListener.onAdLoaded();
+
             }
 
             @Override

@@ -2,6 +2,7 @@ package com.libtest.simple;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -77,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
                 admobInters.setAdmobIntersListener(new AdmobIntersListener() {
                     @Override
                     public void onAdLoaded() {
-                        admobInters.show();
+                        if (admobInters.isAdLoaded())
+                            admobInters.show();
                     }
 
                     @Override
@@ -87,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onAdOpened() {
-                            Log.d("grezz","HElloooooo!");
+                        Log.d("grezz", "HElloooooo!");
                     }
 
                     @Override

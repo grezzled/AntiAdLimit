@@ -25,7 +25,7 @@ public class AdmobInters {
     private String prefName;
     private boolean testEnabled = false;
     private AdmobIntersListener admobIntersListener;
-    boolean isAdLoaded;
+    private boolean isAdLoaded = false;
 
     private InterstitialAd interstitialAd;
 
@@ -36,9 +36,9 @@ public class AdmobInters {
     public AdmobInters setUnitId(String unitId) {
         this.unitId = unitId;
         // WorkAround for creating pref xml file as it doesn't support slash symbol .. so we get the after slash only
-        if (unitId.contains("/")){
-            this.prefName = unitId.substring( unitId.lastIndexOf("/")+1);
-            Log.d(TAG,unitId);
+        if (unitId.contains("/")) {
+            this.prefName = unitId.substring(unitId.lastIndexOf("/") + 1);
+            Log.d(TAG, unitId);
         }
         return this;
     }
@@ -64,8 +64,8 @@ public class AdmobInters {
             @Override
             public void onAdLoaded() {
                 Log.d(TAG, "Success : Admob Interstitial Loaded");
+                isAdLoaded = true;
                 if (admobIntersListener != null) {
-                    isAdLoaded = true;
                     admobIntersListener.onAdLoaded();
                 }
             }
@@ -118,16 +118,16 @@ public class AdmobInters {
                 public void run() {
                     interstitialAd.loadAd(new AdRequest.Builder().build());
                 }
-            }, PrefUtils.getInstance().init(context,prefName).getDelayMs());
+            }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
         }
     }
 
-    public boolean isAdLoaded(){
-        return  isAdLoaded;
+    public boolean isAdLoaded() {
+        return isAdLoaded;
     }
 
-    public void show(){
-        if (interstitialAd!=null && interstitialAd.isLoaded())
+    public void show() {
+        if (interstitialAd != null && interstitialAd.isLoaded())
             interstitialAd.show();
         else
             Log.d(TAG, "Cannot Show : Admob Interstitial Not Loaded ");

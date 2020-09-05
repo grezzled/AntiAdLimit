@@ -96,8 +96,8 @@ public class FanBanner {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(TAG, "Success: Fan Banner Loaded");
+                isAdLoaded = true;
                 if (fanBannerListener != null) {
-                    isAdLoaded = true;
                     fanBannerListener.onLoaded();
                 }
             }

@@ -65,8 +65,8 @@ public class FanInters {
             @Override
             public void onAdLoaded(Ad ad) {
                 Log.d(TAG, "Success : Fan Interstitial Loaded");
+                isAdLoaded = true;
                 if (fanIntersLisntener != null) {
-                    isAdLoaded = true;
                     fanIntersLisntener.onLoaded();
                 }
             }
