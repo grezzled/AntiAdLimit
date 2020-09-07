@@ -29,8 +29,10 @@ public class FanBanner {
     private Context context;
     private LinearLayout adContainer;
     private String placementId;
-    boolean testEnabled = false;
-    boolean isAdLoaded = false;
+    private boolean testEnabled = false;
+    private boolean isAdLoaded = false;
+    private boolean isAdBanned = false;
+
     AdSize adSize1 = null;
     public static final int BANNER_320_50 = 101;
     public static final int BANNER_HEIGHT_50 = 102;
@@ -132,11 +134,18 @@ public class FanBanner {
                     adView.loadAd();
                 }
             }, PrefUtils.getInstance().init(context, placementId).getDelayMs());
+        }else{
+            isAdBanned = true;
+            fanBannerListener.onAdBanned();
         }
     }
 
     public boolean isAdLoaded(){
         return isAdLoaded;
+    }
+
+    public boolean isAdBanned(){
+        return isAdBanned;
     }
 
     public void destroy() {

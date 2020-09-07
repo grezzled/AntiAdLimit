@@ -6,6 +6,8 @@ package anti.ad.limit.admob;
  */
 public interface AdmobBannerListener {
 
+    void onAdBanned();
+
     void onAdLoaded();
 
     void onAdFailedToLoad();

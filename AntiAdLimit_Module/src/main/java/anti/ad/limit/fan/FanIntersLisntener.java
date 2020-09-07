@@ -6,6 +6,8 @@ package anti.ad.limit.fan;
  */
 public abstract interface FanIntersLisntener {
 
+    void onAdBanned();
+
     void onError();
 
     void onLoaded();

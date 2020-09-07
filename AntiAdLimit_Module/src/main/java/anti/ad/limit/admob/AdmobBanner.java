@@ -30,6 +30,7 @@ public class AdmobBanner {
     private String prefName;
     boolean testEnabled;
     boolean isAdLoaded = false;
+    boolean isAdBanned = false;
     AdSize adSize1 = null;
     AdmobBannerListener admobBannerListener;
     AdView adView;
@@ -67,9 +68,9 @@ public class AdmobBanner {
     public AdmobBanner setUnitId(String unitId) {
         this.unitId = unitId;
         // WorkAround for creating pref xml file as it doesn't support slash symbol .. so we get the after slash only
-        if (unitId.contains("/")){
-            this.prefName = unitId.substring( unitId.lastIndexOf("/")+1);
-            Log.d(TAG,unitId);
+        if (unitId.contains("/")) {
+            this.prefName = unitId.substring(unitId.lastIndexOf("/") + 1);
+            Log.d(TAG, unitId);
         }
         return this;
     }
@@ -167,7 +168,6 @@ public class AdmobBanner {
         adView.setAdSize(adSize1);
 
 
-
         // Check if Ad is Banned
         if (!AdLimitUtils.isBanned(context, prefName)) {
             new Handler().postDelayed(new Runnable() {
@@ -176,6 +176,9 @@ public class AdmobBanner {
                     adView.loadAd(adRequest);
                 }
             }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
+        } else {
+            isAdBanned = true;
+            admobBannerListener.onAdBanned();
         }
     }
 
@@ -184,8 +187,12 @@ public class AdmobBanner {
             adView.destroy();
     }
 
-    public boolean isAdLoaded(){
+    public boolean isAdLoaded() {
         return isAdLoaded;
+    }
+
+    public boolean isAdBanned() {
+        return isAdBanned;
     }
 
     private void hide() {

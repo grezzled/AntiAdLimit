@@ -26,6 +26,7 @@ public class AdmobInters {
     private boolean testEnabled = false;
     private AdmobIntersListener admobIntersListener;
     private boolean isAdLoaded = false;
+    private boolean isAdBanned = false;
 
     private InterstitialAd interstitialAd;
 
@@ -119,11 +120,18 @@ public class AdmobInters {
                     interstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
+        }else {
+            isAdBanned = true;
+            admobIntersListener.onAdBanned();
         }
     }
 
     public boolean isAdLoaded() {
         return isAdLoaded;
+    }
+
+    public boolean isAdBanned(){
+        return isAdBanned;
     }
 
     public void show() {

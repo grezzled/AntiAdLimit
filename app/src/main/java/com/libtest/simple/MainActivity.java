@@ -12,6 +12,8 @@ import anti.ad.limit.admob.AdmobBanner;
 import anti.ad.limit.admob.AdmobBannerListener;
 import anti.ad.limit.admob.AdmobInters;
 import anti.ad.limit.admob.AdmobIntersListener;
+import anti.ad.limit.admob.AdmobReward;
+import anti.ad.limit.admob.AdmobRewardListener;
 import anti.ad.limit.fan.FanBanner;
 import anti.ad.limit.fan.FanInters;
 import anti.ad.limit.fan.FanBannerListener;
@@ -21,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     FanBanner fanBanner;
     FanInters fanInters;
+
     AdmobBanner admobBanner;
     AdmobInters admobInters;
+    AdmobReward admobReward;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 // Admob stuff
                 admobBanner = new AdmobBanner(this, AdmobBanner.LARGE_BANNER_320_100, (LinearLayout) findViewById(R.id.viewBanner));
                 admobBanner.setFanBannerListener(new AdmobBannerListener() {
+                    @Override
+                    public void onAdBanned() {
+
+                    }
+
                     @Override
                     public void onAdLoaded() {
 
@@ -77,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
                 admobInters = new AdmobInters(this);
                 admobInters.setAdmobIntersListener(new AdmobIntersListener() {
                     @Override
+                    public void onAdBanned() {
+
+                    }
+
+                    @Override
                     public void onAdLoaded() {
                         if (admobInters.isAdLoaded())
                             admobInters.show();
@@ -109,11 +123,55 @@ public class MainActivity extends AppCompatActivity {
                 });
                 admobInters.enableTestAd(true).setUnitId("ca-app-pub-8281466180702761/9786769849").loadAd();
 
+                admobReward = new AdmobReward(this);
+                admobReward.setUnitId("ca-app-pub-8281466180702761/9990977496").enableTestAd(true);
+                admobReward.setAdmobRewardListener(new AdmobRewardListener() {
+                    @Override
+                    public void onRewardAdBanned(){
+
+                    }
+
+                    @Override
+                    public void onRewardedAdLoaded() {
+                        admobReward.show(MainActivity.this);
+                    }
+
+                    @Override
+                    public void onRewardedAdFailedToLoad() {
+
+                    }
+
+                    @Override
+                    public void onRewardedAdOpened() {
+
+                    }
+
+                    @Override
+                    public void onRewardedAdClosed() {
+
+                    }
+
+                    @Override
+                    public void onUserEarnedReward() {
+
+                    }
+
+                    @Override
+                    public void onRewardedAdFailedToShow() {
+
+                    }
+                });
+                admobReward.loadAd();
 
                 break;
             case AntiAdLimit.NETWORK_FAN:
                 fanBanner = new FanBanner(this, FanBanner.RECTANGLE_HEIGHT_250, (LinearLayout) findViewById(R.id.viewBanner));
                 fanBanner.setFanBannerListener(new FanBannerListener() {
+                    @Override
+                    public void onAdBanned() {
+
+                    }
+
                     @Override
                     public void onError() {
 
@@ -139,6 +197,11 @@ public class MainActivity extends AppCompatActivity {
                         .loadAd();
                 fanInters = new FanInters(this);
                 fanInters.setFanIntersListener(new FanIntersLisntener() {
+                    @Override
+                    public void onAdBanned() {
+
+                    }
+
                     @Override
                     public void onError() {
 

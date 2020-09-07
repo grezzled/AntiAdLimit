@@ -25,7 +25,8 @@ public class FanInters {
     private String unitId;
     private boolean testEnabled = false;
     private FanIntersLisntener fanIntersLisntener;
-    boolean isAdLoaded = false;
+    private boolean isAdLoaded = false;
+    private boolean isAdBanned = false;
 
     private InterstitialAd interstitialAd;
 
@@ -115,6 +116,9 @@ public class FanInters {
                     interstitialAd.loadAd();
                 }
             }, PrefUtils.getInstance().init(context, unitId).getDelayMs());
+        } else {
+            isAdBanned = true;
+            fanIntersLisntener.onAdBanned();
         }
     }
 
@@ -131,6 +135,10 @@ public class FanInters {
 
     public boolean isAdLoaded() {
         return isAdLoaded;
+    }
+
+    public boolean isAdBanned() {
+        return isAdBanned;
     }
 
     public void destroy() {
