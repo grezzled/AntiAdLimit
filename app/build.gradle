@@ -8,8 +8,8 @@ android {
         applicationId "com.libtest.simple"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 4
-        versionName "v1.3-beta"
+        versionCode 5
+        versionName "v1.4-beta"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
