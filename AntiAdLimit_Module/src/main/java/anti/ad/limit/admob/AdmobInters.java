@@ -120,9 +120,10 @@ public class AdmobInters {
                     interstitialAd.loadAd(new AdRequest.Builder().build());
                 }
             }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
-        }else {
+        } else {
             isAdBanned = true;
-            admobIntersListener.onAdBanned();
+            if (admobIntersListener != null)
+                admobIntersListener.onAdBanned();
         }
     }
 
@@ -130,7 +131,7 @@ public class AdmobInters {
         return isAdLoaded;
     }
 
-    public boolean isAdBanned(){
+    public boolean isAdBanned() {
         return isAdBanned;
     }
 

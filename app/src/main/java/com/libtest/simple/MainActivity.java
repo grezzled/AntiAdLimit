@@ -18,11 +18,14 @@ import anti.ad.limit.fan.FanBanner;
 import anti.ad.limit.fan.FanInters;
 import anti.ad.limit.fan.FanBannerListener;
 import anti.ad.limit.fan.FanIntersLisntener;
+import anti.ad.limit.fan.FanReward;
+import anti.ad.limit.fan.FanRewardListener;
 
 public class MainActivity extends AppCompatActivity {
 
     FanBanner fanBanner;
     FanInters fanInters;
+    FanReward fanReward;
 
     AdmobBanner admobBanner;
     AdmobInters admobInters;
@@ -235,6 +238,52 @@ public class MainActivity extends AppCompatActivity {
                 fanInters.enableTestAd(true)
                         .setUnitId("1564516670394005_1564522647060074")
                         .loadAd();
+
+                fanReward = new FanReward(this);
+                fanReward.setFanRewardListener(new FanRewardListener() {
+                    @Override
+                    public void onAdBanned() {
+
+                    }
+
+                    @Override
+                    public void onRewardedVideoActivityDestroyed() {
+
+                    }
+
+                    @Override
+                    public void onRewardedVideoCompleted() {
+
+                    }
+
+                    @Override
+                    public void onLoggingImpression() {
+
+                    }
+
+                    @Override
+                    public void onRewardedVideoClosed() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+
+                    }
+
+                    @Override
+                    public void onAdClicked() {
+
+                    }
+                });
+                fanReward.enableTestAd(true).setUnitId("").loadAd();
+
+
                 break;
             case AntiAdLimit.NETWORK_NONE:
                 // House Ad Here

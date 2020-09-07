@@ -90,10 +90,11 @@ public class AdmobReward {
                     rewardedAd.loadAd(new AdRequest.Builder().build(), rewardedAdLoadCallback);
                 }
             }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
-        }else{
-            Log.d(TAG,"Admob Reward is banned");
+        } else {
+            Log.d(TAG, "Admob Reward is banned");
             isAdBanned = true;
-            admobRewardListener.onRewardAdBanned();
+            if (admobRewardListener != null)
+                admobRewardListener.onRewardAdBanned();
         }
     }
 

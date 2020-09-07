@@ -134,17 +134,18 @@ public class FanBanner {
                     adView.loadAd();
                 }
             }, PrefUtils.getInstance().init(context, placementId).getDelayMs());
-        }else{
+        } else {
             isAdBanned = true;
-            fanBannerListener.onAdBanned();
+            if (fanBannerListener != null)
+                fanBannerListener.onAdBanned();
         }
     }
 
-    public boolean isAdLoaded(){
+    public boolean isAdLoaded() {
         return isAdLoaded;
     }
 
-    public boolean isAdBanned(){
+    public boolean isAdBanned() {
         return isAdBanned;
     }
 

@@ -178,7 +178,8 @@ public class AdmobBanner {
             }, PrefUtils.getInstance().init(context, prefName).getDelayMs());
         } else {
             isAdBanned = true;
-            admobBannerListener.onAdBanned();
+            if (admobBannerListener != null)
+                admobBannerListener.onAdBanned();
         }
     }
 
